@@ -49,7 +49,7 @@ export default function Page() {
           <MyButton disabled={isLoading} className="mt-4">Sign in</MyButton>
         </form>
         <div className="flex justify-center text-sm mt-4">
-          <p className="mr-2">Don't have an accoutn?</p>
+          <p className="mr-2">Don&apos;t have an accoutn?</p>
           <Link href="/sign-up" className="underline underline-offset-2">Sign up</Link>
         </div>
       </div>
