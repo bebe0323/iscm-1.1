@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import { redirect } from 'next/navigation'
 
 import { UserModel } from '../models/User';
 
@@ -31,8 +32,20 @@ export async function signup(formData: FormData) {
     const newUser = new UserModel({ email: email, password: hash });
     await newUser.save();
     console.log('SIGNUP: ' + email);
+    return { success: true };
   } catch (err) {
     console.log(err);
+    if (err instanceof Error) {
+      return {
+        success: false,
+        message: err.message
+      }
+    } else {
+      return {
+        success: false,
+        message: "An unexpected error occurred"
+      }
+    }
   }
 }
 
@@ -41,7 +54,7 @@ export async function signin(formData: FormData) {
   try {
     const email = formData.get("email")?.toString();
     const password = formData.get("password")?.toString();
-
+    
     if (!email || !password) {
       throw new Error("email or password is empty");
     }
@@ -66,11 +79,25 @@ export async function signin(formData: FormData) {
     }, jwtKey, { expiresIn: '1h' });
     cookies().set("auth", token);
     console.log("SIGN-IN: " + email);
+    return { success: true };
   } catch (err) {
     console.log(err);
+    if (err instanceof Error) {
+      return {
+        success: false,
+        message: err.message
+      }
+    } else {
+      return {
+        success: false,
+        message: "An unexpected error occurred"
+      }
+    }
   }
 }
 
 export async function signout() {
+  "use server";
+  console.log('signout');
   cookies().delete("auth");
 }

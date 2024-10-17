@@ -4,7 +4,10 @@ import {
   Users,
   LayoutDashboard,
   Database,
-  Frame
+  Frame,
+  LogIn,
+  UserPlus,
+  Contact
 } from "lucide-react";
 import SignoutButton from "./SignoutButton";
 
@@ -14,17 +17,28 @@ export default function NavbarServer() {
   // unauthorized user
   if (!authCookie) {
     return (
-      <div>
-        <div>
-          <p>general</p>
-          <Link href={'/sign-in'}>Sign in</Link>
-          <Link href={'/sign-up'}>Sign up</Link>
+      <div className="navbar-outer">
+        {/* TOP */}
+        <div className="flex flex-col">
+          <div className="flex my-4">
+            <Frame className="navbar-icon" />
+            <p className="text-black font-semibold">ISCM</p>
+          </div>
         </div>
-
-
-
-        <div>general</div>
-        <div>
+        {/* Bottom */}
+        <div className="mb-4 flex flex-col">
+          <Link href={"/sign-in"} className="navbar-element">
+            <LogIn className="navbar-icon" />
+            <p>Sign-in</p>
+          </Link>
+          <Link href={"/sign-up"} className="navbar-element">
+            <UserPlus className="navbar-icon" />
+            <p>Sign-up</p>
+          </Link>
+          <Link href={"/contact"} className="navbar-element">
+            <Contact className="navbar-icon" />
+            <p>Contact</p>
+          </Link>
         </div>
       </div>
     )
@@ -32,14 +46,15 @@ export default function NavbarServer() {
 
 
   return (
-    <div className="h-full flex flex-col justify-between ml-4 mr-4 text-zinc-700">
+    <div className="navbar-outer">
+      {/* TOP */}
       <div className="flex flex-col">
         <div className="flex my-4">
           <Frame className="navbar-icon" />
           <p className="text-black font-semibold">ISCM</p>
         </div>
         <div className="mt-2">
-          <p className="text-xs font-bold mb-2 tracking-wide">GENERAL</p>
+          <p className="navbar-sub-text">GENERAL</p>
           <Link href={"/todo"} className="navbar-element">
             <Users className="navbar-icon" />
             <p>Users</p>
@@ -55,7 +70,7 @@ export default function NavbarServer() {
         </div>
 
         <div className="mt-2">
-          <p className="text-xs font-bold mb-2 tracking-wide">ADMIN</p>
+          <p className="navbar-sub-text">ADMIN</p>
           <Link href={"/todo"} className="navbar-element">
             <Users className="navbar-icon" />
             <p>pre-start talk</p>
@@ -70,6 +85,7 @@ export default function NavbarServer() {
           </Link>
         </div>
       </div>
+      {/* BOTTOM */}
       <div className="mb-4">
         <SignoutButton />
       </div>
