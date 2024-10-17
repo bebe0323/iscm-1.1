@@ -12,5 +12,6 @@ const MyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTM
     )
   }
 )
+MyInput.displayName = "Inpput";
 
 export { MyInput }
