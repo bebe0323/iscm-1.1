@@ -33,6 +33,7 @@ export default function Page() {
       <div className="border rounded-lg border-stone-300 p-5">
         <p className="text-xl font-semibold mb-2">Login</p>
         <p className="text-sm text-neutral-60 mb-3">Enter your email below to login to your account</p>
+        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
         <form action={handleSubmit}>
           <div className="my-3">
             <p className="text-sm font-semibold mb-1.5">Email</p>

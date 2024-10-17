@@ -34,7 +34,6 @@ export async function signup(formData: FormData) {
     console.log('SIGNUP: ' + email);
     return { success: true };
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       return {
         success: false,
@@ -81,7 +80,6 @@ export async function signin(formData: FormData) {
     console.log("SIGN-IN: " + email);
     return { success: true };
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       return {
         success: false,
@@ -97,7 +95,5 @@ export async function signin(formData: FormData) {
 }
 
 export async function signout() {
-  "use server";
-  console.log('signout');
   cookies().delete("auth");
 }

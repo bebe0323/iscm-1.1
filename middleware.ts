@@ -8,15 +8,12 @@ export function middleware(request: NextRequest) {
   
   // unauthenticated user
   if (!authCookie) {
-    console.log('no cookies');
     const path = request.nextUrl.pathname;
-    console.log(path);
     if (
       !(path == '/' ||
       path.startsWith('/sign-in') ||
       path.startsWith('/sign-up'))
     ) {
-      console.log('here');
       return NextResponse.redirect(new URL('/sign-in', request.url));
     }
   }
@@ -30,4 +27,17 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
 }
