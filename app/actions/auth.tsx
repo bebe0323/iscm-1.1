@@ -3,7 +3,6 @@ import { cookies } from 'next/headers';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import { redirect } from 'next/navigation'
 
 import { UserModel } from '../models/User';
 

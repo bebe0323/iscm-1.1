@@ -87,6 +87,10 @@ export default function NavbarServer() {
       </div>
       {/* BOTTOM */}
       <div className="mb-4">
+        <Link href={"/profile"} className="navbar-element">
+          <Contact className="navbar-icon" />
+          <p>Profile</p>
+        </Link>
         <SignoutButton />
       </div>
     </div>
