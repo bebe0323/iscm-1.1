@@ -2,21 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -24,4 +10,20 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
+.navbar-element {
+  @apply flex mb-3 pl-1.5 pt-1 font-medium text-lg;
+  @apply rounded-md;
+  @apply hover:bg-stone-200 hover:text-zinc-900;
+}
+
+.navbar-icon {
+  @apply h-5 w-5 mr-2 mt-1;
 }
