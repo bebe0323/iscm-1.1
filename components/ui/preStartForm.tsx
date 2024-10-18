@@ -105,6 +105,7 @@ export default function PreStartForm() {
           <p className="bg-stone-200">SAFETY</p>
           <Textarea name="safety" />
         </div>
+        {/* TODO: choose workers */}
         <Button className="w-full mt-5">Create</Button>
       </form>
       
