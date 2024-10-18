@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
 import { UserModel } from '../models/User';
+import { UserType } from '../types/user';
 
 const saltRounds = 10;
 
@@ -28,7 +29,7 @@ export async function signup(formData: FormData) {
     const hash = bcrypt.hashSync(password, salt);
 
     // storing in the database
-    const newUser = new UserModel({ email: email, password: hash });
+    const newUser = new UserModel({ email: email, password: hash, role: 0 });
     await newUser.save();
     console.log('SIGNUP: ' + email);
     return { success: true };
@@ -73,7 +74,7 @@ export async function signin(formData: FormData) {
     const jwtKey = process.env.JSON_KEY!;
     const token = jwt.sign({
       email: email,
-      role: 0,
+      role: userDb.role,
     }, jwtKey, { expiresIn: '1h' });
     cookies().set("auth", token);
     console.log("SIGN-IN: " + email);

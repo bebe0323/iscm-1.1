@@ -31,13 +31,13 @@ export default function Page() {
         <p className="text-sm text-neutral-60 mb-3">Enter your email below to login to your account</p>
         {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
         <form action={handleSubmit}>
-          <div className="my-3">
+          <div className="mt-3">
             <p className="text-sm font-semibold mb-1.5">Email</p>
             <MyInput name="email" type="email" placeholder="Email" required />
           </div>
-          <div>
+          <div className="mt-3">
             <div>Password</div>
-            <MyInput name="password" type="password" placeholder="password" required />
+            <MyInput name="password" type="Password" placeholder="password" required />
           </div>
           <MyButton className="mt-4">Sign up</MyButton>
         </form>

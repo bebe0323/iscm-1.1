@@ -9,11 +9,17 @@ import {
   UserPlus,
   Contact
 } from "lucide-react";
-import SignoutButton from "./SignoutButton";
+import jwt from "jsonwebtoken";
 
-export default function NavbarServer() {
+import SignoutButton from "./SignoutButton";
+import { UserType } from "@/app/types/user";
+import { signout } from "@/app/actions/auth";
+import { redirect } from "next/navigation";
+
+export default async function NavbarServer() {
   const cookieStore = cookies();
-  const authCookie = cookieStore.get("auth");
+  const authCookie = cookieStore.get("auth")?.value;
+
   // unauthorized user
   if (!authCookie) {
     return (
@@ -45,6 +51,16 @@ export default function NavbarServer() {
   }
 
 
+  let user: UserType | null = null;
+  try {
+    const decoded = jwt.verify(authCookie, process.env.JSON_KEY!) as UserType;
+    user = decoded;
+  } catch (err) {
+    console.error("JWT verification failed:", err);
+    await signout();
+    redirect("/login");
+  }
+
   return (
     <div className="navbar-outer">
       {/* TOP */}
@@ -69,22 +85,25 @@ export default function NavbarServer() {
           </Link>
         </div>
 
-        <div className="mt-2">
-          <p className="navbar-sub-text">ADMIN</p>
-          <Link href={"/todo"} className="navbar-element">
-            <Users className="navbar-icon" />
-            <p>pre-start talk</p>
-          </Link>
-          <Link href={"/todo"} className="navbar-element">
-            <LayoutDashboard className="navbar-icon"/>
-            <p className="">Option 1</p>
-          </Link>
-          <Link href={"/todo"} className="navbar-element">
-            <Database className="navbar-icon"/>
-            <p>Option 2</p>
-          </Link>
-        </div>
+        {user.role > 0 && (
+          <div className="mt-2">
+            <p className="navbar-sub-text">ADMIN</p>
+            <Link href={"/todo"} className="navbar-element">
+              <Users className="navbar-icon" />
+              <p>pre-start talk</p>
+            </Link>
+            <Link href={"/todo"} className="navbar-element">
+              <LayoutDashboard className="navbar-icon"/>
+              <p className="">Option 1</p>
+            </Link>
+            <Link href={"/todo"} className="navbar-element">
+              <Database className="navbar-icon"/>
+              <p>Option 2</p>
+            </Link>
+          </div>
+        )}
       </div>
+
       {/* BOTTOM */}
       <div className="mb-4">
         <Link href={"/profile"} className="navbar-element">
