@@ -88,7 +88,7 @@ export default async function NavbarServer() {
         {user.role > 0 && (
           <div className="mt-2">
             <p className="navbar-sub-text">ADMIN</p>
-            <Link href={"/todo"} className="navbar-element">
+            <Link href={"/pre-start-talk"} className="navbar-element">
               <Users className="navbar-icon" />
               <p>pre-start talk</p>
             </Link>

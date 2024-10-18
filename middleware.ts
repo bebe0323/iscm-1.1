@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
 import { cookies } from 'next/headers';
+import { jwtVerify, SignJWT } from 'jose';
+
+const SECRET = new TextEncoder().encode(process.env.JSON_KEY!);
  
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
-  const authCookie = cookieStore.get("auth");
+  const authCookie = cookieStore.get("auth")?.value;
   
   // unauthenticated user
   if (!authCookie) {
@@ -16,17 +19,40 @@ export function middleware(request: NextRequest) {
     ) {
       return NextResponse.redirect(new URL('/sign-in', request.url));
     }
+    return NextResponse.next();
   }
 
-  // prevent authenticated user entering sign-in or sign-up page
-  if (authCookie) {
-    if (
-      request.nextUrl.pathname.startsWith('/sign-in') ||
-      request.nextUrl.pathname.startsWith('/sign-out')
-    ) {
-      return NextResponse.redirect(new URL('/', request.url));
+  // Authenticated user
+  try {
+    const { payload } = await jwtVerify(authCookie, SECRET);
+    const now = Math.floor(Date.now() / 1000);
+    console.log(payload);
+
+    // 5 min
+    if ((payload.exp as number) - now < 300) {
+      const newToken = await new SignJWT(payload)
+        .setProtectedHeader({ alg: 'HS256' })
+        .setExpirationTime('1h')
+        .sign(SECRET)
+
+      const response = NextResponse.next();
+      response.cookies.set('auth', newToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 3600 // 1 hour
+      })
+      return response
     }
+
+  } catch (error) {
+    console.error('JWT verification failed:', error)
+    const response = NextResponse.redirect(new URL('/sign-in', request.url))
+    response.cookies.delete("auth");
+    return response
   }
+
+  return NextResponse.next();
 }
 
 export const config = {

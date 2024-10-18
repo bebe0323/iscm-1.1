@@ -1,13 +1,13 @@
 "use server";
 import { cookies } from 'next/headers';
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { SignJWT } from 'jose';
 import mongoose from "mongoose";
 
 import { UserModel } from '../models/User';
-import { UserType } from '../types/user';
 
 const saltRounds = 10;
+const SECRET = new TextEncoder().encode(process.env.JSON_KEY!);
 
 export async function signup(formData: FormData) {
   try {
@@ -71,12 +71,21 @@ export async function signin(formData: FormData) {
       throw new Error("Wrong password");
     }
 
-    const jwtKey = process.env.JSON_KEY!;
-    const token = jwt.sign({
-      email: email,
+    const newToken = await new SignJWT({
+      email,
       role: userDb.role,
-    }, jwtKey, { expiresIn: '1h' });
-    cookies().set("auth", token);
+      user_id: userDb._id
+    })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime('1h')
+      .sign(SECRET)
+
+    cookies().set("auth", newToken, {
+      httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 3600 // 1 hour
+    });
     console.log("SIGN-IN: " + email);
     return { success: true };
   } catch (err) {

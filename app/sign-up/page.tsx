@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { MyButton } from "@/components/ui/myButton";
-import { MyInput } from "@/components/ui/myInput";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { signup } from "../actions/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -33,13 +33,13 @@ export default function Page() {
         <form action={handleSubmit}>
           <div className="mt-3">
             <p className="text-sm font-semibold mb-1.5">Email</p>
-            <MyInput name="email" type="email" placeholder="Email" required />
+            <Input name="email" type="email" placeholder="Email" required />
           </div>
           <div className="mt-3">
             <div>Password</div>
-            <MyInput name="password" type="Password" placeholder="password" required />
+            <Input name="password" type="Password" placeholder="password" required />
           </div>
-          <MyButton className="mt-4">Sign up</MyButton>
+          <Button className="mt-4">Sign up</Button>
         </form>
         <div className="flex justify-center text-sm mt-4">
           <p className="mr-2">Already have an account?</p>
