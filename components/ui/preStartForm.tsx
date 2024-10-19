@@ -22,16 +22,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { UserClient } from "@/app/types/user";
+import { columns } from "@/app/users/columns";
+import { DataTable } from "@/app/users/data-table";
 
 
-export default function PreStartForm() {
+export default function PreStartForm({ data }: { data: UserClient[] }) {
   const [error, setError] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [date, setDate] = React.useState<Date>()
+  const [rowSelection, setRowSelection] = React.useState({})
 
   const handleSubmit = async (formData: FormData) => {
     setLoading(true);
     console.log(formData);
+    console.log(rowSelection);
+    console.log(date);
     setLoading(false);
   }
 
@@ -105,7 +111,10 @@ export default function PreStartForm() {
           <p className="bg-stone-200">SAFETY</p>
           <Textarea name="safety" />
         </div>
-        {/* TODO: choose workers */}
+        <div className="mt-8">
+          <p className="mb-2">Choose workers</p>
+          <DataTable rowSelection={rowSelection} setRowSelection={setRowSelection} columns={columns} data={data} />
+        </div>
         <Button className="w-full mt-5">Create</Button>
       </form>
     </div>

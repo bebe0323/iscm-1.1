@@ -17,16 +17,40 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+interface DataTableNoSelectionProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+}
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  rowSelection: {}
+  setRowSelection: React.Dispatch<React.SetStateAction<{}>>
+}
+
+export function DataTableNoSelection<TData, TValue>({
+  columns,
+  data
+}: DataTableNoSelectionProps<TData, TValue>) {
+  const [rowSelection, setRowSelection] = React.useState({});
+  return (
+    <DataTable
+      columns={columns}
+      data={data}
+      rowSelection={rowSelection}
+      setRowSelection={setRowSelection}
+    />
+  )
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  rowSelection,
+  setRowSelection
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = React.useState({})
+  // const [rowSelection, setRowSelection] = React.useState({})
   const table = useReactTable({
     data,
     columns,

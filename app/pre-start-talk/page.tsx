@@ -1,7 +1,10 @@
 import PreStartForm from "@/components/ui/preStartForm";
+import { getUsers } from "../actions/users";
 
-export default function Page() {
+export default async function Page() {
+  //
+  const data = await getUsers({ role: 0, index: 0 });
   return (
-    <PreStartForm />
+    <PreStartForm data={data} />
   )
 }
