@@ -1,27 +1,11 @@
 import { getUsers } from "../actions/users";
+import { UserType } from "../types/user";
 import { UserTable, columns } from "./columns"
 import { DataTable } from "./data-table";
 
-async function getData(): Promise<UserTable[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: "728ed52f",
-      role: 1,
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      role: 1,
-      email: "ab@example.com",
-    },
-    {
-      id: "728ed52f",
-      role: 1,
-      email: "abc@example.com",
-    },
-    // ...
-  ]
+async function getData(): Promise<UserType[]> {
+  const users = await getUsers({role: 0, index: 0});
+  return users;
 }
 
 // TODO: complete workers page

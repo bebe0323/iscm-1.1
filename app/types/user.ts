@@ -2,7 +2,8 @@
 export interface UserType {
   email: string;
   role: number;
-  exp: number;
-  iat: number;
+  id: string;
+  iat?: number;
+  exp?: number;
 }
 

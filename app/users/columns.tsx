@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
+import { UserType } from "../types/user";
 
 export type UserTable = {
   id: string,
@@ -9,7 +10,7 @@ export type UserTable = {
   role: number,
 }
 
-export const columns: ColumnDef<UserTable>[] = [
+export const columns: ColumnDef<UserType>[] = [
   {
     id: "select",
     header: ({ table }) => (
