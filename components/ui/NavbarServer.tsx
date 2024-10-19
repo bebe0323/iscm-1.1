@@ -8,7 +8,8 @@ import {
   LogIn,
   UserPlus,
   Contact,
-  BrickWall
+  BrickWall,
+  BadgePlus
 } from "lucide-react";
 import jwt from "jsonwebtoken";
 
@@ -21,7 +22,7 @@ export default async function NavbarServer() {
   const cookieStore = cookies();
   const authCookie = cookieStore.get("auth")?.value;
 
-  // unauthorized user
+  // Unauthorized user
   if (!authCookie) {
     return (
       <div className="navbar-outer">
@@ -62,6 +63,7 @@ export default async function NavbarServer() {
     redirect("/login");
   }
 
+  // Authorized user
   return (
     <div className="navbar-outer">
       {/* TOP */}
@@ -86,6 +88,7 @@ export default async function NavbarServer() {
           </Link>
         </div>
 
+        {/* only visible to admins */}
         {user.role > 0 && (
           <div className="mt-2">
             <p className="navbar-sub-text">ADMIN</p>
@@ -100,6 +103,10 @@ export default async function NavbarServer() {
             <Link href={"/todo"} className="navbar-element">
               <Database className="navbar-icon"/>
               <p>Option 2</p>
+            </Link>
+            <Link href={"/worksites/create"} className="navbar-element">
+              <BadgePlus className="navbar-icon" />
+              <p>create worksite</p>
             </Link>
           </div>
         )}
