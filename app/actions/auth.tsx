@@ -48,7 +48,6 @@ export async function signup(formData: FormData) {
   }
 }
 
-
 export async function signin(formData: FormData) {
   try {
     const email = formData.get("email")?.toString();
@@ -101,7 +100,7 @@ export async function signin(formData: FormData) {
       }
     }
   }
-}
+  }
 
 export async function signout() {
   cookies().delete("auth");

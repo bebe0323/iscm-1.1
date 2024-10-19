@@ -71,9 +71,9 @@ export default async function NavbarServer() {
         </div>
         <div className="mt-2">
           <p className="navbar-sub-text">GENERAL</p>
-          <Link href={"/workers"} className="navbar-element">
+          <Link href={"/users"} className="navbar-element">
             <Users className="navbar-icon" />
-            <p>Workers</p>
+            <p>Users</p>
           </Link>
           <Link href={"/todo"} className="navbar-element">
             <LayoutDashboard className="navbar-icon"/>

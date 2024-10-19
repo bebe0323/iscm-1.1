@@ -8,6 +8,7 @@ const SECRET = new TextEncoder().encode(process.env.JSON_KEY!);
 export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
   const authCookie = cookieStore.get("auth")?.value;
+  console.log(authCookie);
   
   // unauthenticated user
   if (!authCookie) {
