@@ -1,7 +1,7 @@
 import { signout } from "@/app/actions/auth";
-import { UserType } from "@/app/types/user";
+import { UserClient } from "@/app/types/user";
 
-export function Profile({user}: {user: UserType}) {
+export function Profile({user}: {user: UserClient}) {
   return (
     <form action={signout}>
       <div>

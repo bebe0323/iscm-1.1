@@ -12,7 +12,7 @@ import {
 import jwt from "jsonwebtoken";
 
 import SignoutButton from "./SignoutButton";
-import { UserType } from "@/app/types/user";
+import { UserClient } from "@/app/types/user";
 import { signout } from "@/app/actions/auth";
 import { redirect } from "next/navigation";
 
@@ -51,9 +51,9 @@ export default async function NavbarServer() {
   }
 
 
-  let user: UserType | null = null;
+  let user: UserClient | null = null;
   try {
-    const decoded = jwt.verify(authCookie, process.env.JSON_KEY!) as UserType;
+    const decoded = jwt.verify(authCookie, process.env.JSON_KEY!) as UserClient;
     user = decoded;
   } catch (err) {
     console.error("JWT verification failed:", err);

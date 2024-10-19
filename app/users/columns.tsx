@@ -2,15 +2,16 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UserType } from "../types/user";
+import { UserClient } from "../types/user";
 
 export type UserTable = {
   id: string,
   email: string,
+  name: string,
   role: number,
 }
 
-export const columns: ColumnDef<UserType>[] = [
+export const columns: ColumnDef<UserClient>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -33,7 +34,11 @@ export const columns: ColumnDef<UserType>[] = [
   },
   {
     accessorKey: "id",
-    header: "Status",
+    header: "id",
+  },
+  {
+    accessorKey: "name",
+    header: "name",
   },
   {
     accessorKey: "email",

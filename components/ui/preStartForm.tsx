@@ -108,7 +108,6 @@ export default function PreStartForm() {
         {/* TODO: choose workers */}
         <Button className="w-full mt-5">Create</Button>
       </form>
-      
     </div>
   )
 }

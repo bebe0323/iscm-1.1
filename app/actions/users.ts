@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 import { UserModel } from "../models/User";
-import { UserType } from "../types/user";
+import { UserClient } from "../types/user";
 import { Document, Types } from "mongoose";
 
 interface DbUser {
+  _id: Types.ObjectId;
+  name: string;
   email: string;
   password: string;
   role: number;
   createdAt: Date;
-  _id: Types.ObjectId;
 }
 
 export async function getUsers({
@@ -28,10 +29,10 @@ export async function getUsers({
   const users = await UserModel.find().lean<DbUser[]>().exec();
 
   // Convert _id to string for each user
-  const plainUsers = users.map(({ _id, ...rest }) => ({
+  const plainUsers = users.map(({ _id, password, ...rest }) => ({
     ...rest,
     id: _id.toString()
   }));
 
-  return plainUsers as UserType[];
+  return plainUsers as UserClient[];
 }

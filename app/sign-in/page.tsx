@@ -46,11 +46,11 @@ export default function Page() {
             </div>
             <Input name="password" type="password" placeholder="password" required />
           </div>
-          <Button disabled={isLoading} className="mt-4">Sign in</Button>
+          <Button disabled={isLoading} className="mt-4 w-full">Sign in</Button>
         </form>
         <div className="flex justify-center text-sm mt-4">
           <p className="mr-2">Don&apos;t have an accoutn?</p>
-          <Link href="/sign-up" className="underline underline-offset-2">Sign up</Link>
+          <Link href="/sign-up" className="underline underline-offset-2">Sign in</Link>
         </div>
       </div>
     </div>

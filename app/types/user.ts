@@ -1,9 +1,10 @@
 
-export interface UserType {
+// user type that is exposed to client side
+export interface UserClient {
+  name: string;
   email: string;
-  role: number;
+  role: number;  // 0 - worker, 1 - admin, 2-ultra admin
   id: string;
-  iat?: number;
-  exp?: number;
+  iat?: number;   // issued at
+  exp?: number;   // expiration
 }
-

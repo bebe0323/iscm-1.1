@@ -8,7 +8,6 @@ const SECRET = new TextEncoder().encode(process.env.JSON_KEY!);
 export async function middleware(request: NextRequest) {
   const cookieStore = cookies();
   const authCookie = cookieStore.get("auth")?.value;
-  console.log(authCookie);
   
   // unauthenticated user
   if (!authCookie) {
@@ -27,7 +26,6 @@ export async function middleware(request: NextRequest) {
   try {
     const { payload } = await jwtVerify(authCookie, SECRET);
     const now = Math.floor(Date.now() / 1000);
-    console.log(payload);
 
     // 5 min
     if ((payload.exp as number) - now < 300) {
