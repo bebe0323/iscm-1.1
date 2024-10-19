@@ -7,7 +7,8 @@ import {
   Frame,
   LogIn,
   UserPlus,
-  Contact
+  Contact,
+  BrickWall
 } from "lucide-react";
 import jwt from "jsonwebtoken";
 
@@ -79,9 +80,9 @@ export default async function NavbarServer() {
             <LayoutDashboard className="navbar-icon"/>
             <p className="">Dashboard</p>
           </Link>
-          <Link href={"/todo"} className="navbar-element">
-            <Database className="navbar-icon"/>
-            <p>Database</p>
+          <Link href={"/worksites"} className="navbar-element">
+            <BrickWall className="navbar-icon"/>
+            <p>Worksites</p>
           </Link>
         </div>
 
