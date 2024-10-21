@@ -122,7 +122,8 @@ export async function getJwtPayload() {
     const { payload } = await jwtVerify(authCookie, SECRET) as { payload: JwtPayloadType};
     // admins role is greater than 0
     return payload;
-  } catch (_) {
+  } catch (error: unknown) {
+    console.log(error);
     return null;
   }
 }

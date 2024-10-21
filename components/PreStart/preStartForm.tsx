@@ -28,12 +28,13 @@ import { DataTable } from "@/app/users/data-table";
 
 
 export default function PreStartForm({ data }: { data: UserClient[] }) {
-  const [error, setError] = useState<boolean>(false);
+  // const [error, setError] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [date, setDate] = React.useState<Date>()
   const [rowSelection, setRowSelection] = React.useState({})
 
   const handleSubmit = async (formData: FormData) => {
+    // TODO: fix this request
     setLoading(true);
     console.log(formData);
     console.log(rowSelection);
@@ -88,6 +89,7 @@ export default function PreStartForm({ data }: { data: UserClient[] }) {
                   "w-[280px] justify-start text-left font-normal",
                   !date && "text-muted-foreground"
                 )}
+                disabled={isLoading}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {date ? format(date, "PPP") : <span>Pick a date</span>}
