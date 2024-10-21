@@ -28,7 +28,7 @@ export default function Page() {
         // on successful sign-in redirect to main page
         router.push("/");
       }
-    } catch (err) {
+    } catch (_) {
       setError("An unexpected error occurred during sign-in");
     } finally {
       setIsLoading(false);

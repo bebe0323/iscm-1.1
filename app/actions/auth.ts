@@ -113,23 +113,6 @@ export async function signout() {
   cookies().delete("auth");
 }
 
-export async function isAdmin() {
-  const cookieStore = cookies();
-  const authCookie = cookieStore.get("auth")?.value;
-  if (!authCookie) return false;
-
-  try {
-    const { payload } = await jwtVerify(authCookie, SECRET) as { payload: JwtPayloadType};
-    // admins role is greater than 0
-    if (payload.role < 1) {
-      return false;
-    }
-  } catch (error) {
-    return false;
-  }
-  return true;
-}
-
 export async function getJwtPayload() {
   const cookieStore = cookies();
   const authCookie = cookieStore.get("auth")?.value;
@@ -139,7 +122,7 @@ export async function getJwtPayload() {
     const { payload } = await jwtVerify(authCookie, SECRET) as { payload: JwtPayloadType};
     // admins role is greater than 0
     return payload;
-  } catch (error) {
+  } catch (_) {
     return null;
   }
 }

@@ -1,6 +1,6 @@
 "use server";
 
-import mongoose, { Types } from "mongoose";
+import { Types } from "mongoose";
 import { UserModel } from "../models/User";
 import { UserClient } from "../types/user";
 import { connectMongoDb } from "./mongodb";
@@ -21,7 +21,8 @@ export async function getUsers({
   role: number,
   index: number
 }) {
-
+  // todo: filter for role and index (pagination) in the future
+  console.log(role, index);
   // Ensure mongoose connection is established
   await connectMongoDb();
 
