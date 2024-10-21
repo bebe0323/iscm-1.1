@@ -9,24 +9,31 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const router = useRouter();
-
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSubmit = async (formData: FormData) => {
-    setLoading(true);
-    const result = await signin(formData);
-    if (!result.success) {
-      if (result.message) {
-        setError(result.message);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    // enabling loading to disable submit button
+    event.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    const formData = new FormData(event.currentTarget);
+    try {
+      const result = await signin(formData);
+      if (!result.success) {
+        // show the error message on the form
+        setError(result.message || "An unexpected error occurred during sign-in");
       } else {
-        setError("An unexpected error occurred during signup");
+        // on successful sign-in redirect to main page
+        router.push("/");
       }
-    } else if (result.success) {
-      router.push("/");
+    } catch (err) {
+      setError("An unexpected error occurred during sign-in");
+    } finally {
+      setIsLoading(false);
     }
-    setLoading(false);
-  }
+  };
 
   return (
     <div className="w-full h-full flex justify-center items-center">
@@ -34,7 +41,7 @@ export default function Page() {
         <p className="text-xl font-semibold mb-2">Login</p>
         <p className="text-sm text-neutral-60 mb-3">Enter your email below to login to your account</p>
         {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-        <form action={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="my-3">
             <p className="text-sm font-semibold mb-1.5">Email</p>
             <Input name="email" type="email" placeholder="Email" required />
