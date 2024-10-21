@@ -1,8 +1,7 @@
+import CreateWorksite from "@/components/ui/createWorksite";
 
 export default function Page() {
   return (
-    <div>
-      create worksite
-    </div>
+    <CreateWorksite />
   )
 }
