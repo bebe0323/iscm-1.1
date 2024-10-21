@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { UserModel } from "../models/User";
 import { UserClient } from "../types/user";
-import { Types } from "mongoose";
 
 interface DbUser {
   _id: Types.ObjectId;

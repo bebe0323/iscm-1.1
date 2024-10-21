@@ -22,7 +22,6 @@ export default function CreateWorksite() {
     setLoading(true);
     const formData = new FormData(event.currentTarget); // Get form data properly
     console.log(formData);
-    await virtualWait();
     
     // TODO: write back-end request
     setLoading(false);
