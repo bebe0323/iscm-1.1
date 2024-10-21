@@ -1,4 +1,4 @@
-import CreateWorksite from "@/components/ui/createWorksite";
+import { CreateWorksite } from "@/components/worksite/createWorksite";
 
 export default function Page() {
   return (

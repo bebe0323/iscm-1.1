@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "./input";
-import { Button } from "./button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { postWorkSite } from "@/app/actions/workSite";
 
 function wait(ms: number): Promise<void> {
@@ -15,7 +15,7 @@ export async function virtualWait(): Promise<void> {
   console.log("5 seconds have passed!");
 }
 
-export default function CreateWorksite() {
+export function CreateWorksite() {
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

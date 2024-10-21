@@ -1,4 +1,4 @@
-import PreStartForm from "@/components/ui/preStartForm";
+import PreStartForm from "@/components/PreStart/preStartForm";
 import { getUsers } from "../actions/users";
 
 export default async function Page() {

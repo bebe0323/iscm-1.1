@@ -32,7 +32,11 @@ export async function signup(formData: FormData) {
     const hash = bcrypt.hashSync(password, salt);
 
     // storing in the database
-    const newUser = new UserModel({ email: email, password: hash, role: 0 });
+    const newUser = new UserModel({
+      email: email,
+      password: hash,
+      role: 0
+    });
     await newUser.save();
     console.log('SIGNUP: ' + email);
     return { success: true };
@@ -124,4 +128,18 @@ export async function isAdmin() {
     return false;
   }
   return true;
+}
+
+export async function getJwtPayload() {
+  const cookieStore = cookies();
+  const authCookie = cookieStore.get("auth")?.value;
+  if (!authCookie) return null;
+
+  try {
+    const { payload } = await jwtVerify(authCookie, SECRET) as { payload: JwtPayloadType};
+    // admins role is greater than 0
+    return payload;
+  } catch (error) {
+    return null;
+  }
 }

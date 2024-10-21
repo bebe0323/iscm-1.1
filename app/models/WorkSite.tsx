@@ -34,5 +34,5 @@ const workSiteSchema = new Schema({
   },
 });
 
-export const WorkStieModel = mongoose.models.WorkSite ||
+export const WorkSiteModel = mongoose.models.WorkSite ||
                              mongoose.model("WorkSite", workSiteSchema);
