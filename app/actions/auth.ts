@@ -1,10 +1,11 @@
 "use server";
 import { cookies } from 'next/headers';
 import bcrypt from "bcrypt";
-import { SignJWT } from 'jose';
+import { jwtVerify, SignJWT } from 'jose';
 import mongoose from "mongoose";
 
 import { UserModel } from '../models/User';
+import { connectMongoDb } from './mongodb';
 
 const saltRounds = 10;
 const SECRET = new TextEncoder().encode(process.env.JSON_KEY!);
@@ -17,7 +18,8 @@ export async function signup(formData: FormData) {
       throw new Error("Email or password is empty");
     }
     
-    await mongoose.connect(process.env.MONGODB_URI!);
+    await connectMongoDb();
+
     // checking is there an user with same email in the database
     const userDB = await UserModel.findOne({ email: email }).exec();
     if (userDB) {
@@ -57,7 +59,7 @@ export async function signin(formData: FormData) {
       throw new Error("email or password is empty");
     }
     
-    await mongoose.connect(process.env.MONGODB_URI!);
+    await connectMongoDb();
     const userDb = await UserModel.findOne({ email: email }).exec();
     if (!userDb) {
       throw new Error("User does not exist");
@@ -104,4 +106,18 @@ export async function signin(formData: FormData) {
 
 export async function signout() {
   cookies().delete("auth");
+}
+
+export async function isAdmin() {
+  const cookieStore = cookies();
+  const authCookie = cookieStore.get("auth")?.value;
+  if (!authCookie) return false;
+
+  try {
+    const { payload } = await jwtVerify(authCookie, SECRET);
+    console.log(payload);
+  } catch (error) {
+    return false;
+  }
+  return true;
 }

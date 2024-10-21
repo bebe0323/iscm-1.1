@@ -1,6 +1,7 @@
 import mongoose, { Types } from "mongoose";
 import { UserModel } from "../models/User";
 import { UserClient } from "../types/user";
+import { connectMongoDb } from "./mongodb";
 
 interface DbUser {
   _id: Types.ObjectId;
@@ -20,9 +21,7 @@ export async function getUsers({
 }) {
 
   // Ensure mongoose connection is established
-  if (mongoose.connection.readyState !== 1) {
-    await mongoose.connect(process.env.MONGODB_URI!);
-  }
+  await connectMongoDb();
 
   // lean(): return plain javascript object
   const users = await UserModel.find().lean<DbUser[]>().exec();

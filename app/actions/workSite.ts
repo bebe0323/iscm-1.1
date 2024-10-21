@@ -1,5 +1,5 @@
 import mongoose, { Types } from "mongoose";
-import { cookies } from "next/headers"; 
+import { isAdmin } from "./auth";
 
 interface DbWorksite {
   _id: Types.ObjectId;
@@ -11,11 +11,18 @@ interface DbWorksite {
   status: number; // [0,2]: 0-not started, 1-in progress, 2-finished
 }
 
-export async function postWorkSite({
-  address
-}: {
-  address: string,
-}) {
-  const cookieStore = cookies();
-  const authCookie = cookieStore.get("auth")?.value;
+export async function postWorkSite(formData: FormData) {
+  try {
+    if (!(await isAdmin())) {
+      throw new Error("only admins can create worksite");
+    }
+    const address = formData.get("address")?.toString();
+    if (!address) {
+      throw new Error("address is empty");
+    }
+    
+  } catch (err) {
+
+  }
+
 }

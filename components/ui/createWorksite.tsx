@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Input } from "./input";
 import { Button } from "./button";
+import { postWorkSite } from "@/app/actions/workSite";
 
 function wait(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -21,7 +22,7 @@ export default function CreateWorksite() {
     event.preventDefault();
     setLoading(true);
     const formData = new FormData(event.currentTarget); // Get form data properly
-    console.log(formData);
+    await postWorkSite(formData);
     
     // TODO: write back-end request
     setLoading(false);
