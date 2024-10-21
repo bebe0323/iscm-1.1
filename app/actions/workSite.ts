@@ -1,3 +1,4 @@
+"use server";
 import mongoose, { Types } from "mongoose";
 import { isAdmin } from "./auth";
 
@@ -13,14 +14,16 @@ interface DbWorksite {
 
 export async function postWorkSite(formData: FormData) {
   try {
+    console.log('here');
     if (!(await isAdmin())) {
       throw new Error("only admins can create worksite");
     }
     const address = formData.get("address")?.toString();
+    console.log(address);
     if (!address) {
       throw new Error("address is empty");
     }
-    
+
   } catch (err) {
 
   }

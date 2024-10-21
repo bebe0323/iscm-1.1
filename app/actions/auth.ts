@@ -1,11 +1,12 @@
 "use server";
+
 import { cookies } from 'next/headers';
 import bcrypt from "bcrypt";
 import { jwtVerify, SignJWT } from 'jose';
-import mongoose from "mongoose";
 
 import { UserModel } from '../models/User';
 import { connectMongoDb } from './mongodb';
+import { JwtPayloadType } from '../types/user';
 
 const saltRounds = 10;
 const SECRET = new TextEncoder().encode(process.env.JSON_KEY!);
@@ -114,8 +115,11 @@ export async function isAdmin() {
   if (!authCookie) return false;
 
   try {
-    const { payload } = await jwtVerify(authCookie, SECRET);
-    console.log(payload);
+    const { payload } = await jwtVerify(authCookie, SECRET) as { payload: JwtPayloadType};
+    // admins role is greater than 0
+    if (payload.role < 1) {
+      return false;
+    }
   } catch (error) {
     return false;
   }

@@ -1,3 +1,5 @@
+"use server";
+
 import mongoose, { Types } from "mongoose";
 import { UserModel } from "../models/User";
 import { UserClient } from "../types/user";

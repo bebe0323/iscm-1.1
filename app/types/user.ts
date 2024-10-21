@@ -8,3 +8,10 @@ export interface UserClient {
   iat?: number;   // issued at
   exp?: number;   // expiration
 }
+
+export interface JwtPayloadType {
+  email: string;
+  role: number;
+  user_id: string;
+  exp: number;
+}
