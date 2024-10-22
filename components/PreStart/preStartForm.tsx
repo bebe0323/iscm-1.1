@@ -25,9 +25,16 @@ import {
 import { UserClient } from "@/app/types/user";
 import { columns } from "@/app/users/columns";
 import { DataTable } from "@/app/users/data-table";
+import { TypeWorkSiteClient } from "@/app/types/workSite";
 
 
-export default function PreStartForm({ data }: { data: UserClient[] }) {
+export default function PreStartForm({
+  users,
+  workSites,
+}: {
+  users: UserClient[],
+  workSites: TypeWorkSiteClient[],
+}) {
   // const [error, setError] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [date, setDate] = React.useState<Date>()
@@ -115,7 +122,12 @@ export default function PreStartForm({ data }: { data: UserClient[] }) {
         </div>
         <div className="mt-8">
           <p className="mb-2">Choose workers</p>
-          <DataTable rowSelection={rowSelection} setRowSelection={setRowSelection} columns={columns} data={data} />
+          <DataTable
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
+            columns={columns}
+            data={users}
+          />
         </div>
         <Button className="w-full mt-5">Create</Button>
       </form>
