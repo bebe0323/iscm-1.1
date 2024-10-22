@@ -1,18 +1,9 @@
 "use server";
 
-import { Types } from "mongoose";
 import { UserModel } from "../models/User";
 import { UserClient } from "../types/user";
 import { connectMongoDb } from "./mongodb";
-
-interface DbUser {
-  _id: Types.ObjectId;
-  name: string;
-  email: string;
-  password: string;
-  role: number;
-  createdAt: Date;
-}
+import { TypeUserDb } from "../types/user";
 
 export async function getUsers({
   role,
@@ -27,7 +18,7 @@ export async function getUsers({
   await connectMongoDb();
 
   // lean(): return plain javascript object
-  const users = await UserModel.find().lean<DbUser[]>().exec();
+  const users = await UserModel.find().lean<TypeUserDb[]>().exec();
 
   // Convert _id to string for each user
   const plainUsers = users.map(({ _id, password, ...rest }) => ({

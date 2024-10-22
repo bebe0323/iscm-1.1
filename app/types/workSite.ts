@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
-export type TypeWorkSite = {
+export type TypeWorkSiteDb = {
   _id: Types.ObjectId;
   created_by: Types.ObjectId;
   address: string;

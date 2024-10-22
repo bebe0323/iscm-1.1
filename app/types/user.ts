@@ -1,6 +1,17 @@
+import { Types } from "mongoose";
+
+// type of the user in the database
+export type TypeUserDb = {
+  _id: Types.ObjectId;
+  name: string;
+  email: string;
+  password: string;
+  role: number;
+  createdAt: Date;
+}
 
 // user type that is exposed to client side
-export interface UserClient {
+export type UserClient = {
   name: string;
   email: string;
   role: number;  // 0 - worker, 1 - admin, 2-ultra admin
@@ -9,7 +20,7 @@ export interface UserClient {
   exp?: number;   // expiration
 }
 
-export interface JwtPayloadType {
+export type JwtPayloadType = {
   email: string;
   role: number;
   user_id: string;

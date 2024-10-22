@@ -3,17 +3,7 @@ import mongoose from "mongoose";
 import { getJwtPayload } from "./auth";
 import { connectMongoDb } from "./mongodb";
 import { WorkSiteModel } from "../models/WorkSite";
-import { TypeWorkSite, TypeWorkSiteClient } from "../types/workSite";
-
-// interface DbWorksite {
-//   _id: Types.ObjectId;
-//   created_by: Types.ObjectId;
-//   address: string;
-//   createdAt: Date;
-//   startedAt: Date | null;
-//   endedAt: Date | null;
-//   status: number; // [0,2]: 0-not started, 1-in progress, 2-finished
-// }
+import { TypeWorkSiteDb, TypeWorkSiteClient } from "../types/workSite";
 
 export async function postWorkSite(formData: FormData) {
   try {
@@ -78,7 +68,7 @@ export async function getWorkSites({
   await connectMongoDb();
 
   const workSites = await WorkSiteModel.find({ status: status })
-                      .lean<TypeWorkSite[]>()
+                      .lean<TypeWorkSiteDb[]>()
                       .exec();
 
   const plainWorkSites = workSites.map(({ _id, created_by, ...rest }) => ({
