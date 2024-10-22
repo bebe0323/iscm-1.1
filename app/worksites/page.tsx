@@ -7,7 +7,7 @@ import { workSiteColumns } from "./workSiteColumns";
 export default async function Page() {
   const data = await getWorkSites({ status: 0 });
   return (
-    <div>
+    <div className="container mx-auto py-10">
       <DataTableNoSelection columns={workSiteColumns} data={data} />
     </div>
   )

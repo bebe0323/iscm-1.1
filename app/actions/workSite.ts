@@ -71,10 +71,15 @@ export async function getWorkSites({
                       .lean<TypeWorkSiteDb[]>()
                       .exec();
 
-  const plainWorkSites = workSites.map(({ _id, created_by, ...rest }) => ({
+  const plainWorkSites = workSites.map(({ _id, created_by, status, ...rest }) => ({
     ...rest,
     _id: _id.toString(),
     created_by: created_by.toString(),
+    status: 
+      status === 0 ? "not started" :
+      status === 1 ? "in progress" :
+      status === 2 ? "finished" :
+      "unknown"  // fallback for any unexpected status value
   }))
 
   return plainWorkSites as TypeWorkSiteClient[];
