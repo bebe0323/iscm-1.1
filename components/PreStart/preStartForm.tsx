@@ -80,9 +80,14 @@ export default function PreStartForm({
               <SelectValue placeholder="Theme" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
+              {workSites.map((workSite) => (
+                <SelectItem key={workSite._id} value={workSite.address}>
+                    {workSite.address}
+                </SelectItem>
+              ))}
+              {/* <SelectItem value="light">Light</SelectItem>
               <SelectItem value="dark">Dark</SelectItem>
-              <SelectItem value="system">System</SelectItem>
+              <SelectItem value="system">System</SelectItem> */}
             </SelectContent>
           </Select>
         </div>

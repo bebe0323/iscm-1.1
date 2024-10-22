@@ -67,9 +67,18 @@ export async function getWorkSites({
 }) {
   await connectMongoDb();
 
-  const workSites = await WorkSiteModel.find({ status: status })
-                      .lean<TypeWorkSiteDb[]>()
-                      .exec();
+  let workSites: TypeWorkSiteDb[] = [];
+
+  // status=-1, fetching all worksites
+  if (status === -1) {
+    workSites = await WorkSiteModel.find()
+                  .lean<TypeWorkSiteDb[]>()
+                  .exec();
+  } else {
+    workSites = await WorkSiteModel.find({ status: status })
+                  .lean<TypeWorkSiteDb[]>()
+                  .exec();
+  }
 
   const plainWorkSites = workSites.map(({ _id, created_by, status, ...rest }) => ({
     ...rest,
