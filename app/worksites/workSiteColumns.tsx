@@ -1,16 +1,9 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { TypeWorkSiteClient } from "../types/workSite";
 
-export type WorkSiteTable = {
-  id: string,
-  address: string,
-  status: number,
-  startedAt: Date,
-  endedAt: Date,
-}
-
-export const workSiteColumns: ColumnDef<WorkSiteTable>[] = [
+export const workSiteColumns: ColumnDef<TypeWorkSiteClient>[] = [
   {
     accessorKey: "status",
     header: "Status",
@@ -19,4 +12,12 @@ export const workSiteColumns: ColumnDef<WorkSiteTable>[] = [
     accessorKey: "address",
     header: "Address",
   },
+  {
+    accessorKey: "startedAt",
+    header: "Started at",
+  },
+  {
+    accessorKey: "endedAt",
+    header: "Ended at",
+  }
 ]
