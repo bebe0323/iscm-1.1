@@ -1,4 +1,5 @@
 import { TypeWorkSiteClient } from "@/app/types/workSite";
+import Link from "next/link";
 
 function formatDate(date: Date | null) {
   if (!date) {
@@ -28,7 +29,7 @@ export function WorkSiteTable({
       {workSites.map((workSite) => (
         <div key={workSite._id} className="border-t flex w-full px-2 py-1.5">
           <div className="w-1/4">{workSite.status}</div>
-          <div className="w-1/4">{workSite.address}</div>
+          <Link className="w-1/4" href={`/worksites/${workSite._id}`}>{workSite.address}</Link>
           <div className="w-1/4">{formatDate(workSite.startedAt)}</div>
           <div className="w-1/4">{formatDate(workSite.endedAt)}</div>
         </div>
