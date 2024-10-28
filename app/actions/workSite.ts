@@ -1,5 +1,5 @@
 "use server";
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { getJwtPayload } from "./auth";
 import { connectMongoDb } from "./mongodb";
 import { WorkSiteModel } from "../models/WorkSite";
@@ -92,4 +92,50 @@ export async function getWorkSites({
   }))
 
   return plainWorkSites as TypeWorkSiteClient[];
+}
+
+export async function getWorkSite({
+  id
+}: {
+  id: string
+}) {
+  await connectMongoDb();
+
+  try {
+    const workSiteObjectId = new mongoose.Types.ObjectId(id);
+    const workSite = await WorkSiteModel.findOne({
+      _id: new mongoose.Types.ObjectId(id)
+    })
+      .lean<TypeWorkSiteDb>()
+      .exec();
+
+    if (workSite) {
+      const transformWorkSite = ({
+        _id,
+        created_by,
+        status,
+        ...rest
+      }: {
+        _id: mongoose.Types.ObjectId,
+        created_by: mongoose.Types.ObjectId,
+        status: number
+      }) => ({
+        ...rest,
+        _id: _id.toString(),
+        created_by: created_by.toString(),
+        status: 
+          status === 0 ? "not started" :
+          status === 1 ? "in progress" :
+          status === 2 ? "finished" :
+          "unknown"  // fallback for any unexpected status value
+      });
+      
+      const plainWorkSite = transformWorkSite(workSite);
+      return plainWorkSite as TypeWorkSiteClient;
+    }
+    
+    return null;
+  } catch (err) {
+    return null;
+  }
 }
