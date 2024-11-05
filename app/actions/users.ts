@@ -20,9 +20,9 @@ export async function getUsers({
   const users = await UserModel.find().lean<TypeUserDb[]>().exec();
 
   // Convert _id to string for each user
-  const plainUsers = users.map(({ _id, password, ...rest }) => ({
+  const plainUsers = users.map(({ _id, password, createdAt, ...rest }) => ({
     ...rest,
-    id: _id.toString()
+    _id: _id.toString()
   }));
 
   return plainUsers as UserClient[];
