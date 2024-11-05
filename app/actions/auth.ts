@@ -6,7 +6,7 @@ import { jwtVerify, SignJWT } from 'jose';
 
 import { UserModel } from '../models/User';
 import { connectMongoDb } from './mongodb';
-import { JwtPayloadType } from '../types/user';
+import { UserClient } from '../types/user';
 
 const saltRounds = 10;
 const SECRET = new TextEncoder().encode(process.env.JSON_KEY!);
@@ -119,7 +119,7 @@ export async function getJwtPayload() {
   if (!authCookie) return null;
 
   try {
-    const { payload } = await jwtVerify(authCookie, SECRET) as { payload: JwtPayloadType};
+    const { payload } = await jwtVerify(authCookie, SECRET) as { payload: UserClient};
     // admins role is greater than 0
     return payload;
   } catch (error: unknown) {

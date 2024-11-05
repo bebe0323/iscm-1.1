@@ -27,15 +27,16 @@ export function WorkSiteTable({
         <div className="w-1/4">Ended at</div>
       </div>
       {workSites.map((workSite) => (
-        <div
+        <Link
+          href={`/worksites/${workSite._id}`}
           key={workSite._id}
           className="border-t flex w-full px-2 py-1.5 hover:bg-gray-50"
         >
           <div className="w-1/4">{workSite.status}</div>
-          <Link className="w-1/4" href={`/worksites/${workSite._id}`}>{workSite.address}</Link>
+          <div className="w-1/4">{workSite.address}</div>
           <div className="w-1/4">{formatDate(workSite.startedAt)}</div>
           <div className="w-1/4">{formatDate(workSite.endedAt)}</div>
-        </div>
+        </Link>
       ))}
     </div>
   )

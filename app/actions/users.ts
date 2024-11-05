@@ -13,7 +13,6 @@ export async function getUsers({
   index: number
 }) {
   // todo: filter for role and index (pagination) in the future
-  console.log(role, index);
   // Ensure mongoose connection is established
   await connectMongoDb();
 

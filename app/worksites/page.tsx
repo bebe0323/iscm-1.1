@@ -10,7 +10,9 @@ export default async function Page() {
   return (
     <div className="container mx-auto py-10">
       <DataTableNoSelection columns={workSiteColumns} data={data} />
-      <WorkSiteTable workSites={data} />
+      <div className="mx-5">
+        <WorkSiteTable workSites={data} />
+      </div>
     </div>
   )
 }

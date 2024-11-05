@@ -1,5 +1,5 @@
 "use server";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import { getJwtPayload } from "./auth";
 import { connectMongoDb } from "./mongodb";
 import { WorkSiteModel } from "../models/WorkSite";
@@ -23,13 +23,12 @@ export async function postWorkSite(formData: FormData) {
     if (!address) {
       throw new Error("address is empty");
     }
-    console.log('address: ', address);
     
     // connect to the db
     await connectMongoDb();
 
     // converting userId from string to mongoose.Types.ObjectId
-    const userId = new mongoose.Types.ObjectId(jwtPayload.user_id);
+    const userId = new mongoose.Types.ObjectId(jwtPayload._id);
 
     const newAddress = new WorkSiteModel({
       created_by: userId,
