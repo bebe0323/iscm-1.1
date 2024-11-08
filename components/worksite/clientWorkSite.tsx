@@ -77,7 +77,8 @@ export function ClientWorkSite({
   const [startDate, setStartDate] = React.useState<Date | undefined>(workSite.startedAt || undefined);
   const [endDate, setEndDate] = React.useState<Date | undefined>(workSite.endedAt || undefined);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (formData: FormData) => {
+    console.log(formData);
     console.log(startDate);
     console.log(endDate);
   }
@@ -85,7 +86,7 @@ export function ClientWorkSite({
   return (
     <div className="w-full">
       <div className="font-bold text-2xl my-4 ml-4">Worksite</div>
-      <form className="md:w-9/12 mx-auto" onSubmit={handleSubmit}>
+      <form className="md:w-9/12 mx-auto" action={handleSubmit}>
         <div className="flex">
           <div className="font-bold">{workSite.address}</div>
         </div>
@@ -93,7 +94,7 @@ export function ClientWorkSite({
         <div className="flex justify-between py-3">
           <p className="font-semibold">Status</p>
           <div>{workSite.status}</div>
-          <Select>
+          <Select name="status">
             <SelectTrigger className="w-[220px]">
               <SelectValue placeholder="Pick a status" />
             </SelectTrigger>
