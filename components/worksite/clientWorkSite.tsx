@@ -28,9 +28,28 @@ function DateComponent({
   date: Date
 }) {
   const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
 
   return (
-    <div>
+    <div className="flex">
+      <p className="pr-2">{months[month]}</p>
+      <p>{day}</p>
+      <p className="pr-2">,</p>
       <p>{year}</p>
     </div>
   )
@@ -123,8 +142,18 @@ export function ClientWorkSite({
           </div>
           <DatePicker date={endDate} setDate={setEndDate} />
         </div>
+        <div className="border border-b"></div>
+        <div className="flex">
+          <p className="font-semibold">Created by</p>
+          <div>{workSite.created_by}</div>
+        </div>
+        <div className="flex">
+          <p className="font-semibold">Created at</p>
+          <div>{<DateComponent date={workSite.createdAt} />}</div>
+        </div>
         <Button>Save changes</Button>
       </form>
+      
     </div>
   )
 }
