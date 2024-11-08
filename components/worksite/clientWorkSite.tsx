@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { updateWorkSite } from "@/app/actions/workSite";
 
 function DateComponent({
   date
@@ -100,6 +101,13 @@ export function ClientWorkSite({
     console.log(formData);
     console.log(startDate);
     console.log(endDate);
+    const newStatus = formData.get("status")?.toString();
+    await updateWorkSite({
+      _id: workSite._id,
+      newStatus: newStatus,
+      startDate: startDate,
+      endDate: endDate,
+    });
   }
 
   return (

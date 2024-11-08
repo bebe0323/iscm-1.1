@@ -138,3 +138,17 @@ export async function getWorkSite({
     return null;
   }
 }
+
+export async function updateWorkSite({
+  _id,
+  newStatus,
+  startDate,
+  endDate,
+}: {
+  _id: string,
+  newStatus: string | undefined,
+  startDate: Date | undefined,
+  endDate: Date | undefined,
+}) {
+  
+}
