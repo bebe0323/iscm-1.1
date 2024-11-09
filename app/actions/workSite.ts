@@ -150,5 +150,11 @@ export async function updateWorkSite({
   startDate: Date | undefined,
   endDate: Date | undefined,
 }) {
-  
+  await connectMongoDb();
+
+  try {
+    
+  } catch (err) {
+    return null;
+  }
 }

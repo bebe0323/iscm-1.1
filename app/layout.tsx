@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import NavbarServer from "@/components/ui/NavbarServer";
+import { Toaster } from "@/components/ui/sonner"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,6 +36,7 @@ export default function RootLayout({
         <div className="bg-white border-stone-300 border w-full my-3 mr-3 rounded-lg">
           {children}
         </div>
+        <Toaster />
       </body>
     </html>
   );
