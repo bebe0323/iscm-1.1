@@ -33,8 +33,11 @@ export default function RootLayout({
         <div className="w-64">
           <NavbarServer />
         </div>
-        <div className="bg-white border-stone-300 border w-full my-3 mr-3 rounded-lg">
-          {children}
+        <div className="flex-grow overflow-hidden bg-white border-stone-300 border w-full my-3 mr-3 rounded-lg">
+          {/* {children} */}
+          <div className="h-full overflow-y-auto p-4">
+            {children}
+          </div>
         </div>
         <Toaster />
       </body>

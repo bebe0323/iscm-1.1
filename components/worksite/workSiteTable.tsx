@@ -34,8 +34,8 @@ export function WorkSiteTable({
         >
           <div className="w-1/4">{workSite.status}</div>
           <div className="w-1/4">{workSite.address}</div>
-          <div className="w-1/4">{formatDate(workSite.startedAt)}</div>
-          <div className="w-1/4">{formatDate(workSite.endedAt)}</div>
+          <div className="w-1/4">{formatDate(workSite.startDate)}</div>
+          <div className="w-1/4">{formatDate(workSite.endDate)}</div>
         </Link>
       ))}
     </div>

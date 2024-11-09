@@ -31,11 +31,11 @@ export async function postWorkSite(formData: FormData) {
     const userId = new mongoose.Types.ObjectId(jwtPayload._id);
 
     const newAddress = new WorkSiteModel({
-      created_by: userId,
+      createdBy: userId,
       address: address,
       // createdAt: default Date.now()
-      // startedAt: default null
-      // endedAt: default null
+      // startDate: default null
+      // endDate: default null
       // status: default 0
     });
 
@@ -79,10 +79,10 @@ export async function getWorkSites({
                   .exec();
   }
 
-  const plainWorkSites = workSites.map(({ _id, created_by, status, ...rest }) => ({
+  const plainWorkSites = workSites.map(({ _id, createdBy, status, ...rest }) => ({
     ...rest,
     _id: _id.toString(),
-    created_by: created_by.toString(),
+    createdBy: createdBy.toString(),
     status: 
       status === 0 ? "not started" :
       status === 1 ? "in progress" :
@@ -111,17 +111,17 @@ export async function getWorkSite({
     if (workSite) {
       const transformWorkSite = ({
         _id,
-        created_by,
+        createdBy,
         status,
         ...rest
       }: {
         _id: mongoose.Types.ObjectId,
-        created_by: mongoose.Types.ObjectId,
+        createdBy: mongoose.Types.ObjectId,
         status: number
       }) => ({
         ...rest,
         _id: _id.toString(),
-        created_by: created_by.toString(),
+        createdBy: createdBy.toString(),
         status: 
           status === 0 ? "not started" :
           status === 1 ? "in progress" :
@@ -146,15 +146,27 @@ export async function updateWorkSite({
   endDate,
 }: {
   _id: string,
-  newStatus: string | undefined,
+  newStatus: string,
   startDate: Date | undefined,
   endDate: Date | undefined,
 }) {
   await connectMongoDb();
 
   try {
-    
+    const numberNewStatus = parseInt(newStatus);
+    const workSiteObjectId = new mongoose.Types.ObjectId(_id);
+    const filter = { _id: workSiteObjectId };
+    const update = {
+      startDate: startDate,
+      endDate: endDate,
+      status: numberNewStatus
+    };
+
+    const doc = await WorkSiteModel.findOneAndUpdate(filter, update, { new: true });
+    console.log(doc);
+    return true;
+
   } catch (err) {
-    return null;
+    return false;
   }
 }

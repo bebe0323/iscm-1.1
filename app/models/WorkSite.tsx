@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const workSiteSchema = new Schema({
-  created_by: { // _id of the person who created it
+  createdBy: { // _id of the person who created it
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,

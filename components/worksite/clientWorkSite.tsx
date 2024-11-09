@@ -94,8 +94,8 @@ export function ClientWorkSite({
 }: {
   workSite: TypeWorkSiteClient
 }) {
-  const [startDate, setStartDate] = React.useState<Date | undefined>(workSite.startedAt || undefined);
-  const [endDate, setEndDate] = React.useState<Date | undefined>(workSite.endedAt || undefined);
+  const [startDate, setStartDate] = React.useState<Date | undefined>(workSite.startDate || undefined);
+  const [endDate, setEndDate] = React.useState<Date | undefined>(workSite.endDate || undefined);
 
   const handleSubmit = async (formData: FormData) => {
     console.log(formData);
@@ -104,7 +104,7 @@ export function ClientWorkSite({
     const newStatus = formData.get("status")?.toString();
     await updateWorkSite({
       _id: workSite._id,
-      newStatus: newStatus,
+      newStatus: newStatus || workSite.status,
       startDate: startDate,
       endDate: endDate,
     });
@@ -123,7 +123,7 @@ export function ClientWorkSite({
           <div>{workSite.status}</div>
           <Select name="status">
             <SelectTrigger className="w-[220px]">
-              <SelectValue placeholder="Pick a status" />
+              <SelectValue placeholder="New status" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="0">Not Started</SelectItem>
@@ -136,8 +136,8 @@ export function ClientWorkSite({
         <div className="flex justify-between py-3">
           <p className="font-semibold">Started at</p>
           <div>
-            {workSite.startedAt && <DateComponent date={workSite.startedAt} />}
-            {!workSite.startedAt && <p>Not started</p>}
+            {workSite.startDate && <DateComponent date={workSite.startDate} />}
+            {!workSite.startDate && <p>Not started</p>}
           </div>
           <DatePicker date={startDate} setDate={setStartDate} />
         </div>
@@ -145,17 +145,18 @@ export function ClientWorkSite({
         <div className="flex justify-between py-3 ">
           <p className="font-semibold">Finished at</p>
           <div>
-            {workSite.endedAt && <DateComponent date={workSite.endedAt} />}
-            {!workSite.endedAt && <p>Not Finished</p>}
+            {workSite.endDate && <DateComponent date={workSite.endDate} />}
+            {!workSite.endDate && <p>Not Finished</p>}
           </div>
           <DatePicker date={endDate} setDate={setEndDate} />
         </div>
         <div className="border border-b"></div>
-        <div className="flex">
+        <div className="flex justify-between py-3">
           <p className="font-semibold">Created by</p>
-          <div>{workSite.created_by}</div>
+          <div>{workSite.createdBy}</div>
         </div>
-        <div className="flex">
+        <div className="border border-b"></div>
+        <div className="flex justify-between py-3">
           <p className="font-semibold">Created at</p>
           <div>{<DateComponent date={workSite.createdAt} />}</div>
         </div>
