@@ -98,9 +98,6 @@ export function ClientWorkSite({
   const [endDate, setEndDate] = React.useState<Date | undefined>(workSite.endDate || undefined);
 
   const handleSubmit = async (formData: FormData) => {
-    console.log(formData);
-    console.log(startDate);
-    console.log(endDate);
     const newStatus = formData.get("status")?.toString();
     await updateWorkSite({
       _id: workSite._id,
@@ -109,6 +106,7 @@ export function ClientWorkSite({
       endDate: endDate,
     });
   }
+  console.log(workSite.status);
 
   return (
     <div className="w-full">
@@ -123,7 +121,12 @@ export function ClientWorkSite({
           <div>{workSite.status}</div>
           <Select name="status">
             <SelectTrigger className="w-[220px]">
-              <SelectValue placeholder="New status" />
+              <SelectValue placeholder={
+                workSite.status === "not started" ? "Not Started"
+                : workSite.status === "in progress"
+                ? "In Progress"
+                : "Finished"
+              } />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="0">Not Started</SelectItem>

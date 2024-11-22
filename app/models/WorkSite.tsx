@@ -15,11 +15,11 @@ const workSiteSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
-  startedAt: { // the date the job started
+  startDate: { // the date the job started
     type: Date,
     default: null,
   },
-  endedAt: { // the date the job ended
+  endDate: { // the date the job ended
     type: Date,
     default: null,
   },
