@@ -26,6 +26,8 @@ import { UserClient } from "@/app/types/user";
 import { columns } from "@/app/users/columns";
 import { DataTable } from "@/app/users/data-table";
 import { TypeWorkSiteClient } from "@/app/types/workSite";
+import { postPreStartTalk } from "@/app/actions/preStartTalk";
+import { toast } from "sonner";
 
 
 export default function PreStartForm({
@@ -41,11 +43,23 @@ export default function PreStartForm({
   const [rowSelection, setRowSelection] = React.useState({})
 
   const handleSubmit = async (formData: FormData) => {
-    // TODO: fix this request
     setLoading(true);
-    console.log(formData);
-    console.log(rowSelection);
-    console.log(date);
+    const selectedRows = Object.keys(rowSelection);
+    const workerIds = [];
+    for (const row in selectedRows) {
+      workerIds.push(users[parseInt(row)]._id);
+    }
+    const res = await postPreStartTalk({
+      formData: formData,
+      workerIds:workerIds,
+      jobDate: date,
+    })
+    if (!res.success) {
+      toast(res.message)
+    } else {
+      toast("successfully created");
+      // redirect to the pre-start-talk page
+    }
     setLoading(false);
   }
 
@@ -74,14 +88,14 @@ export default function PreStartForm({
       </div>
       <form action={handleSubmit}>
         <div className="flex">
-          <p>WORKPLACE</p>
-          <Select name="workplace">
+          <p>WORKSITE</p>
+          <Select name="workSite">
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Theme" />
+              <SelectValue placeholder="Pick Worksite" />
             </SelectTrigger>
             <SelectContent>
               {workSites.map((workSite) => (
-                <SelectItem key={workSite._id} value={workSite.address}>
+                <SelectItem key={workSite._id} value={workSite._id}>
                     {workSite.address}
                 </SelectItem>
               ))}
@@ -113,13 +127,14 @@ export default function PreStartForm({
                 selected={date}
                 onSelect={setDate}
                 initialFocus
+                required={true}
               />
             </PopoverContent>
           </Popover>
         </div>
         <div className="mt-8">
           <p className="bg-stone-200">DAILY WORK ACTIVITIES</p>
-          <Textarea name="daily-work-activities" />
+          <Textarea name="dailyWorkActivities" />
         </div>
         <div className="mt-8">
           <p className="bg-stone-200">SAFETY</p>

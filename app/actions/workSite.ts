@@ -15,7 +15,7 @@ export async function postWorkSite(formData: FormData) {
     
     // checking user role
     if (jwtPayload.role < 1) {
-      throw new Error("user is not an Admin");
+      throw new Error("admins can create worksite");
     }
     
     // address: from client side form
