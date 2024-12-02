@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { updateWorkSite } from "@/app/actions/workSite";
+import { toast } from "sonner";
 
 function DateComponent({
   date
@@ -90,23 +91,31 @@ function DatePicker({
 }
 
 export function ClientWorkSite({
-  workSite
+  workSiteBackEnd
 }: {
-  workSite: TypeWorkSiteClient
+  workSiteBackEnd: TypeWorkSiteClient
 }) {
-  const [startDate, setStartDate] = React.useState<Date | undefined>(workSite.startDate || undefined);
-  const [endDate, setEndDate] = React.useState<Date | undefined>(workSite.endDate || undefined);
+  const [workSite, setWorkSite] = React.useState<TypeWorkSiteClient>(workSiteBackEnd);
+  const [startDate, setStartDate] = React.useState<Date | undefined>(workSiteBackEnd.startDate || undefined);
+  const [endDate, setEndDate] = React.useState<Date | undefined>(workSiteBackEnd.endDate || undefined);
 
   const handleSubmit = async (formData: FormData) => {
-    const newStatus = formData.get("status")?.toString();
-    await updateWorkSite({
+    const rawStatus = formData.get("status")?.toString();
+    const newStatus = rawStatus ? parseInt(rawStatus) : null;
+    const res = await updateWorkSite({
       _id: workSite._id,
-      newStatus: newStatus || workSite.status,
+      newStatus: newStatus ?? workSite.status,
       startDate: startDate,
       endDate: endDate,
     });
+    if (!res.success) {
+      // show the error message
+      toast(res.message);
+    } else {
+      setWorkSite(res.data!);
+      toast("Successfully updated");
+    }
   }
-  console.log(workSite.status);
 
   return (
     <div className="w-full">
@@ -122,10 +131,10 @@ export function ClientWorkSite({
           <Select name="status">
             <SelectTrigger className="w-[220px]">
               <SelectValue placeholder={
-                workSite.status === "not started" ? "Not Started"
-                : workSite.status === "in progress"
-                ? "In Progress"
-                : "Finished"
+                workSite.status === 0 ? "Not Started"
+                : workSite.status === 1 ? "In Progress"
+                : workSite.status === 2 ? "Finished"
+                : "Unknown status"
               } />
             </SelectTrigger>
             <SelectContent>
@@ -165,7 +174,6 @@ export function ClientWorkSite({
         </div>
         <Button>Save changes</Button>
       </form>
-      
     </div>
   )
 }

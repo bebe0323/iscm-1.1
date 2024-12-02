@@ -18,5 +18,5 @@ export type TypeWorkSiteClient = {
   createdAt: Date;
   startDate: Date | null;
   endDate: Date | null;
-  status: string; // not started, in progress, finished
+  status: number; // not started, in progress, finished
 }

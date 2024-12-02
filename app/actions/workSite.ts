@@ -59,6 +59,19 @@ export async function postWorkSite(formData: FormData) {
   }
 }
 
+const dbTypeToClientTypeWorkSite = ({
+  _id,
+  createdBy,
+  ...rest
+}: {
+  _id: mongoose.Types.ObjectId,
+  createdBy: mongoose.Types.ObjectId,
+}) => ({
+  ...rest,
+  _id: _id.toString(),
+  createdBy: createdBy.toString(),
+});
+
 export async function getWorkSites({
   status
 }: {
@@ -79,16 +92,12 @@ export async function getWorkSites({
                   .exec();
   }
 
-  const plainWorkSites = workSites.map(({ _id, createdBy, status, ...rest }) => ({
-    ...rest,
-    _id: _id.toString(),
-    createdBy: createdBy.toString(),
-    status: 
-      status === 0 ? "not started" :
-      status === 1 ? "in progress" :
-      status === 2 ? "finished" :
-      "unknown"  // fallback for any unexpected status value
-  }))
+  // const plainWorkSites = workSites.map(({ _id, createdBy, ...rest }) => ({
+  //   ...rest,
+  //   _id: _id.toString(),
+  //   createdBy: createdBy.toString(),
+  // }))
+  const plainWorkSites = workSites.map(dbTypeToClientTypeWorkSite);
 
   return plainWorkSites as TypeWorkSiteClient[];
 }
@@ -101,38 +110,16 @@ export async function getWorkSite({
   await connectMongoDb();
 
   try {
-    const workSiteObjectId = new mongoose.Types.ObjectId(id);
     const workSite = await WorkSiteModel.findOne({
       _id: new mongoose.Types.ObjectId(id)
     })
       .lean<TypeWorkSiteDb>()
       .exec();
 
-    if (workSite) {
-      const transformWorkSite = ({
-        _id,
-        createdBy,
-        status,
-        ...rest
-      }: {
-        _id: mongoose.Types.ObjectId,
-        createdBy: mongoose.Types.ObjectId,
-        status: number
-      }) => ({
-        ...rest,
-        _id: _id.toString(),
-        createdBy: createdBy.toString(),
-        status: 
-          status === 0 ? "not started" :
-          status === 1 ? "in progress" :
-          status === 2 ? "finished" :
-          "unknown"  // fallback for any unexpected status value
-      });
-      
-      const plainWorkSite = transformWorkSite(workSite);
+    if (workSite) { 
+      const plainWorkSite = dbTypeToClientTypeWorkSite(workSite);
       return plainWorkSite as TypeWorkSiteClient;
     }
-    
     return null;
   } catch (err) {
     return null;
@@ -146,27 +133,38 @@ export async function updateWorkSite({
   endDate,
 }: {
   _id: string,
-  newStatus: string,
+  newStatus: number,
   startDate: Date | undefined,
   endDate: Date | undefined,
 }) {
   await connectMongoDb();
 
   try {
-    const numberNewStatus = parseInt(newStatus);
     const workSiteObjectId = new mongoose.Types.ObjectId(_id);
     const filter = { _id: workSiteObjectId };
     const update = {
       startDate: startDate,
       endDate: endDate,
-      status: numberNewStatus
+      status: newStatus,
     };
 
-    const doc = await WorkSiteModel.findOneAndUpdate(filter, update, { new: true });
-    console.log(doc);
-    return true;
-
-  } catch (err) {
-    return false;
+    const doc = await WorkSiteModel.findOneAndUpdate(filter, update, { new: true, lean: true }) as TypeWorkSiteDb;
+    const plainWorkSite = dbTypeToClientTypeWorkSite(doc) as TypeWorkSiteClient;
+    return {
+      success: true,
+      data: plainWorkSite,
+    };
+  } catch (err: unknown) {
+    if (err instanceof mongoose.Error || err instanceof Error) {
+      return {
+        success: false,
+        message: err.message,
+      };
+    } else {
+      return {
+        success: false,
+        message: "unknown error",
+      };
+    }
   }
 }

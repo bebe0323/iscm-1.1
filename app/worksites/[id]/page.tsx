@@ -14,5 +14,5 @@ export default async function Page({ params }: { params: { id: string } }) {
     )
   }
   
-  return <ClientWorkSite workSite={workSite} />
+  return <ClientWorkSite workSiteBackEnd={workSite} />
 }
