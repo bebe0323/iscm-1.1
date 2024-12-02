@@ -9,7 +9,9 @@ import {
   UserPlus,
   Contact,
   BrickWall,
-  BadgePlus
+  BadgePlus,
+  ShieldCheck,
+  ShieldPlus
 } from "lucide-react";
 import jwt from "jsonwebtoken";
 
@@ -86,15 +88,23 @@ export default async function NavbarServer() {
             <BrickWall className="navbar-icon"/>
             <p>Worksites</p>
           </Link>
+          <Link href={"/pre-start-talk"} className="navbar-element">
+            <ShieldCheck className="navbar-icon" />
+            <p>Pre-start talk</p>
+          </Link>
         </div>
 
         {/* only visible to admins */}
         {user.role > 0 && (
           <div className="mt-2">
             <p className="navbar-sub-text">ADMIN</p>
-            <Link href={"/pre-start-talk"} className="navbar-element">
-              <Users className="navbar-icon" />
-              <p>pre-start talk</p>
+            <Link href={"/pre-start-talk/create"} className="navbar-element">
+              <ShieldPlus className="navbar-icon" />
+              <p>create pre-start</p>
+            </Link>
+            <Link href={"/worksites/create"} className="navbar-element">
+              <BadgePlus className="navbar-icon" />
+              <p>create worksite</p>
             </Link>
             <Link href={"/todo"} className="navbar-element">
               <LayoutDashboard className="navbar-icon"/>
@@ -103,10 +113,6 @@ export default async function NavbarServer() {
             <Link href={"/todo"} className="navbar-element">
               <Database className="navbar-icon"/>
               <p>Option 2</p>
-            </Link>
-            <Link href={"/worksites/create"} className="navbar-element">
-              <BadgePlus className="navbar-icon" />
-              <p>create worksite</p>
             </Link>
           </div>
         )}
