@@ -2,6 +2,7 @@
 import mongoose from "mongoose";
 import { getJwtPayload } from "./auth";
 import { PreStartTalkModel } from "../models/PreStartTalk";
+import { connectMongoDb } from "./mongodb";
 
 function idToMongooseObjectId(id: string) {
   return new mongoose.Types.ObjectId(id);
@@ -75,4 +76,9 @@ export async function postPreStartTalk({
       };
     }
   }
+}
+
+export async function getPreStartTalks() {
+  await connectMongoDb();
+  
 }
