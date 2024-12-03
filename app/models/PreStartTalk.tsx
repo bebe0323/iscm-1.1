@@ -17,9 +17,20 @@ const preStartTalkSchema = new Schema({
     type: Date,
     required: true,
   },
-  workerIds: {
-    type: [mongoose.Schema.Types.ObjectId],
-    required: true,
+  workers: {
+    // type: [mongoose.Schema.Types.ObjectId],
+    type: [
+      {
+        workerId: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+        },
+        status: {
+          type: Number,
+          default: 0, // 0-not filled, 1-filled
+        },
+      }
+    ]
   },
   dailyWorkActivities: {
     type: String,

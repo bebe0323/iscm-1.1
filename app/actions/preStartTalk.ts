@@ -19,7 +19,7 @@ export async function postPreStartTalk({
 }) {
   try {
     if (!jobDate) {
-      throw new Error("Choose date!")
+      throw new Error("Choose date!");
     }
     // retrieving data from form
     const workSiteId = formData.get("workSite")?.toString();
@@ -50,11 +50,17 @@ export async function postPreStartTalk({
     const userId = idToMongooseObjectId(jwtPayload._id);
     const mongooseWorkSiteId = idToMongooseObjectId(workSiteId);
     const mongooseWorkerIds = workerIds.map(idToMongooseObjectId);
+    const objectWorkers = mongooseWorkerIds.map((worker) => {
+      return ({
+        workerId: worker,
+        status: 0,
+      })
+    })
     const newPreStartTalk = new PreStartTalkModel({
       workSiteId: mongooseWorkSiteId,
       createdBy: userId,
       jobDate: jobDate,
-      workerIds: mongooseWorkerIds,
+      workers: objectWorkers,
       dailyWorkActivities: dailyWorkActivities,
       safety: safety,
     });
@@ -78,7 +84,31 @@ export async function postPreStartTalk({
   }
 }
 
-export async function getPreStartTalks() {
-  await connectMongoDb();
-  
+export async function getPendingPreStartTalks() {
+  try {
+    await connectMongoDb();
+    // getting user id from jwt token
+    const jwtPayload = await getJwtPayload();
+    if (!jwtPayload) {
+      throw new Error("user doesn't have an userId")
+    }
+    //
+    const res = await PreStartTalkModel.find({
+      'workers.workerId': idToMongooseObjectId(jwtPayload._id),
+      'workers.status': 0,
+    });
+  } catch (err) {
+    if (err instanceof mongoose.Error || err instanceof Error) {
+      console.log(err.message);
+      return {
+        success: false,
+        message: err.message,
+      };
+    } else {
+      return {
+        success: false,
+        message: "unknown error",
+      };
+    }
+  }
 }

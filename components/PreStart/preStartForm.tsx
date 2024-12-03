@@ -46,7 +46,7 @@ export default function PreStartForm({
     setLoading(true);
     const selectedRows = Object.keys(rowSelection);
     const workerIds = [];
-    for (const row in selectedRows) {
+    for (const row of selectedRows) {
       workerIds.push(users[parseInt(row)]._id);
     }
     const res = await postPreStartTalk({

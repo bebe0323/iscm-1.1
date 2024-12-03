@@ -80,7 +80,7 @@ export async function signin(formData: FormData) {
     const newToken = await new SignJWT({
       email,
       role: userDb.role,
-      user_id: userDb._id
+      _id: userDb._id
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setExpirationTime('1h')
