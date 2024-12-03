@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { getJwtPayload } from "./auth";
 import { PreStartTalkModel } from "../models/PreStartTalk";
 import { connectMongoDb } from "./mongodb";
+import { TypePreStartTalkDb } from "../types/preStartTalk";
 
 function idToMongooseObjectId(id: string) {
   return new mongoose.Types.ObjectId(id);
@@ -96,7 +97,12 @@ export async function getPendingPreStartTalks() {
     const res = await PreStartTalkModel.find({
       'workers.workerId': idToMongooseObjectId(jwtPayload._id),
       'workers.status': 0,
-    });
+    }) as TypePreStartTalkDb[];
+    console.log(res);
+    return {
+      success: true,
+      data: res,
+    }
   } catch (err) {
     if (err instanceof mongoose.Error || err instanceof Error) {
       console.log(err.message);
