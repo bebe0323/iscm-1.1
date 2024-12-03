@@ -94,14 +94,31 @@ export async function getPendingPreStartTalks() {
       throw new Error("user doesn't have an userId")
     }
     //
-    const res = await PreStartTalkModel.find({
+    const preStartTalksDb = await PreStartTalkModel.find({
       'workers.workerId': idToMongooseObjectId(jwtPayload._id),
       'workers.status': 0,
-    }) as TypePreStartTalkDb[];
-    console.log(res);
+    }).lean() as TypePreStartTalkDb[];
+
+    // converting all the Types.ObjectId to string before passing into client side
+    // workers object array divided into worderIds and status array
+    const preStartTalksClient = preStartTalksDb.map(({
+      workers,
+      _id,
+      workSiteId,
+      createdBy,
+      ...rest
+    }) => ({
+      ...rest,
+      workerIds: workers.map((worker) => worker.workerId.toString()),
+      status: workers.map((worker) => worker.status),
+      _id: _id.toString(),
+      workSiteId: workSiteId.toString(),
+      createdBy: createdBy.toString(),
+    }));
+
     return {
       success: true,
-      data: res,
+      data: preStartTalksClient,
     }
   } catch (err) {
     if (err instanceof mongoose.Error || err instanceof Error) {
