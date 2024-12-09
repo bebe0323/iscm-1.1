@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { signup } from "../actions/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Page() {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function Page() {
         setError(result.message || "An unexpected error occurred during signup");
       } else {
         // on successful sign-up redirect to sign-in page
+        toast("Sign up successful");
         router.push("/sign-in");
       }
     } catch (error: unknown) {

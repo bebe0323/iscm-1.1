@@ -1,10 +1,11 @@
 // only ultra-admins can see this page
 
 import { getWorkSite } from "@/app/actions/workSite"
+import { TypeWorkSiteClient } from "@/app/types/workSite";
 import { ClientWorkSite } from "@/components/worksite/clientWorkSite";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const workSite = await getWorkSite({id: params.id});
+  const workSite = (await getWorkSite({id: params.id}));
 
   if (!workSite) {
     return (
@@ -13,6 +14,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       </div>
     )
   }
+
   
   return <ClientWorkSite workSiteBackEnd={workSite} />
 }

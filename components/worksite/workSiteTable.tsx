@@ -1,4 +1,4 @@
-import { TypeWorkSiteClient } from "@/app/types/workSite";
+import { TypeWorkSiteList } from "@/app/types/workSite";
 import Link from "next/link";
 
 function formatDate(date: Date | null) {
@@ -16,7 +16,7 @@ function formatDate(date: Date | null) {
 export function WorkSiteTable({
   workSites
 }: {
-  workSites: TypeWorkSiteClient[]
+  workSites: TypeWorkSiteList[]
 }) {
   return (
     <div className=" mt-10 border rounded-md">

@@ -22,7 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { UserClient } from "@/app/types/user";
+import { TypeUserClient } from "@/app/types/user";
 import { columns } from "@/app/users/columns";
 import { DataTable } from "@/app/users/data-table";
 import { TypeWorkSiteClient } from "@/app/types/workSite";
@@ -34,7 +34,7 @@ export default function PreStartForm({
   users,
   workSites,
 }: {
-  users: UserClient[],
+  users: TypeUserClient[],
   workSites: TypeWorkSiteClient[],
 }) {
   // const [error, setError] = useState<boolean>(false);

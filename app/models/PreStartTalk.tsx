@@ -23,6 +23,7 @@ const preStartTalkSchema = new Schema({
       {
         workerId: {
           type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
           required: true,
         },
         status: {

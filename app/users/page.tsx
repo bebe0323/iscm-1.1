@@ -1,9 +1,9 @@
 import { getUsers } from "../actions/users";
-import { UserClient} from "../types/user";
+import { TypeUserClient} from "../types/user";
 import { columns } from "./columns"
 import { DataTableNoSelection } from "./data-table";
 
-async function getData(): Promise<UserClient[]> {
+async function getData(): Promise<TypeUserClient[]> {
   const users = await getUsers({ role: 0, index: 0 });
   return users;
 }

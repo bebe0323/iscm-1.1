@@ -1,9 +1,8 @@
 "use server";
 
 import { UserModel } from "../models/User";
-import { UserClient } from "../types/user";
+import { TypeUserClient } from "../types/user";
 import { connectMongoDb } from "./mongodb";
-import { TypeUserDb } from "../types/user";
 
 export async function getUsers({
   role,
@@ -17,13 +16,17 @@ export async function getUsers({
   await connectMongoDb();
 
   // lean(): return plain javascript object
-  const users = await UserModel.find().lean<TypeUserDb[]>().exec();
-
-  // Convert _id to string for each user
-  const plainUsers = users.map(({ _id, password, createdAt, ...rest }) => ({
-    ...rest,
-    _id: _id.toString()
+  const users = await UserModel.find()
+    .lean<TypeUserClient[]>()
+    .select('_id name email role')
+    .exec();
+  
+  // _id: mongoose.Types.ObjectId
+  // converting into string
+  const plainUsers = users.map((user) => ({
+    ...user,
+    _id: user._id.toString(),
   }));
 
-  return plainUsers as UserClient[];
+  return plainUsers;
 }

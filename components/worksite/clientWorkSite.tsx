@@ -95,6 +95,7 @@ export function ClientWorkSite({
 }: {
   workSiteBackEnd: TypeWorkSiteClient
 }) {
+  console.log(workSiteBackEnd)
   const [workSite, setWorkSite] = React.useState<TypeWorkSiteClient>(workSiteBackEnd);
   const [startDate, setStartDate] = React.useState<Date | undefined>(workSiteBackEnd.startDate || undefined);
   const [endDate, setEndDate] = React.useState<Date | undefined>(workSiteBackEnd.endDate || undefined);
@@ -165,7 +166,7 @@ export function ClientWorkSite({
         <div className="border border-b"></div>
         <div className="flex justify-between py-3">
           <p className="font-semibold">Created by</p>
-          <div>{workSite.createdBy}</div>
+          <div>{workSite.createdByEmail}</div>
         </div>
         <div className="border border-b"></div>
         <div className="flex justify-between py-3">

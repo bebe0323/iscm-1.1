@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UserClient } from "../types/user";
+import { TypeUserClient } from "../types/user";
 
 export type UserTable = {
   id: string,
@@ -11,8 +11,9 @@ export type UserTable = {
   role: number,
 }
 
-export const columns: ColumnDef<UserClient>[] = [
-  {
+export const columns: ColumnDef<TypeUserClient>[] = [
+  // removing select option
+  /* {
     id: "select",
     header: ({ table }) => (
       <Checkbox
@@ -31,9 +32,9 @@ export const columns: ColumnDef<UserClient>[] = [
         aria-label="Select row"
       />
     )
-  },
+  }, */
   {
-    accessorKey: "id",
+    accessorKey: "_id",
     header: "id",
   },
   {

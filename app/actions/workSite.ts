@@ -3,7 +3,12 @@ import mongoose from "mongoose";
 import { getJwtPayload } from "./auth";
 import { connectMongoDb } from "./mongodb";
 import { WorkSiteModel } from "../models/WorkSite";
-import { TypeWorkSiteDb, TypeWorkSiteClient } from "../types/workSite";
+import {
+  TypeWorkSiteDb,
+  TypeWorkSiteClient,
+  TypeWorkSiteUserPopulatedDb,
+  TypeWorkSiteList
+} from "../types/workSite";
 
 export async function postWorkSite(formData: FormData) {
   try {
@@ -44,7 +49,6 @@ export async function postWorkSite(formData: FormData) {
     return { success: true };
 
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       return {
         success: false,
@@ -59,18 +63,6 @@ export async function postWorkSite(formData: FormData) {
   }
 }
 
-const dbTypeToClientTypeWorkSite = ({
-  _id,
-  createdBy,
-  ...rest
-}: {
-  _id: mongoose.Types.ObjectId,
-  createdBy: mongoose.Types.ObjectId,
-}) => ({
-  ...rest,
-  _id: _id.toString(),
-  createdBy: createdBy.toString(),
-});
 
 export async function getWorkSites({
   status
@@ -79,27 +71,42 @@ export async function getWorkSites({
 }) {
   await connectMongoDb();
 
-  let workSites: TypeWorkSiteDb[] = [];
+  let workSites = [];
 
   // status=-1, fetching all worksites
   if (status === -1) {
     workSites = await WorkSiteModel.find()
                   .lean<TypeWorkSiteDb[]>()
+                  .select("address startDate endDate status")
                   .exec();
   } else {
     workSites = await WorkSiteModel.find({ status: status })
                   .lean<TypeWorkSiteDb[]>()
+                  .select("address startDate endDate status")
                   .exec();
   }
 
-  // const plainWorkSites = workSites.map(({ _id, createdBy, ...rest }) => ({
-  //   ...rest,
-  //   _id: _id.toString(),
-  //   createdBy: createdBy.toString(),
-  // }))
-  const plainWorkSites = workSites.map(dbTypeToClientTypeWorkSite);
+  const plainWorkSites = workSites.map((workSite) => ({
+    ...workSite,
+    _id: workSite._id.toString(),
+  }))
+  return plainWorkSites as TypeWorkSiteList[];
+}
 
-  return plainWorkSites as TypeWorkSiteClient[];
+function mapWorkSiteToClient(workSite: TypeWorkSiteUserPopulatedDb): TypeWorkSiteClient {
+  return {
+    _id: workSite._id.toString(),
+    address: workSite.address,
+    createdAt: workSite.createdAt,
+    startDate: workSite.startDate,
+    endDate: workSite.endDate,
+    status: workSite.status,
+    // flattened 'createdBy' field
+    createdById: workSite.createdBy._id.toString(),
+    createdByName: workSite.createdBy.name,
+    createdByEmail: workSite.createdBy.email,
+    createdByRole: workSite.createdBy.role,
+  };
 }
 
 export async function getWorkSite({
@@ -113,14 +120,15 @@ export async function getWorkSite({
     const workSite = await WorkSiteModel.findOne({
       _id: new mongoose.Types.ObjectId(id)
     })
-      .lean<TypeWorkSiteDb>()
+      .lean<TypeWorkSiteUserPopulatedDb>()
+      .populate("createdBy")
       .exec();
 
-    if (workSite) { 
-      const plainWorkSite = dbTypeToClientTypeWorkSite(workSite);
-      return plainWorkSite as TypeWorkSiteClient;
+    if (!workSite) {
+      throw new Error("worksite doesn't exist")
     }
-    return null;
+    const clientWorkSite = mapWorkSiteToClient(workSite);
+    return clientWorkSite;
   } catch (err) {
     return null;
   }
@@ -148,8 +156,16 @@ export async function updateWorkSite({
       status: newStatus,
     };
 
-    const doc = await WorkSiteModel.findOneAndUpdate(filter, update, { new: true, lean: true }) as TypeWorkSiteDb;
-    const plainWorkSite = dbTypeToClientTypeWorkSite(doc) as TypeWorkSiteClient;
+    const doc = await WorkSiteModel
+      .findOneAndUpdate(filter, update, { new: true, lean: true })
+      .populate("createdBy")
+      .exec()
+
+    if (!doc) {
+      throw new Error("error in updating the document");
+    }
+
+    const plainWorkSite = mapWorkSiteToClient(doc as TypeWorkSiteUserPopulatedDb);
     return {
       success: true,
       data: plainWorkSite,
