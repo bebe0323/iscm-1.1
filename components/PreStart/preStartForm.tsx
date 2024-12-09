@@ -25,7 +25,7 @@ import {
 import { TypeUserClient } from "@/app/types/user";
 import { columns } from "@/app/users/columns";
 import { DataTable } from "@/app/users/data-table";
-import { TypeWorkSiteClient } from "@/app/types/workSite";
+import { TypeWorkSiteList } from "@/app/types/workSite";
 import { postPreStartTalk } from "@/app/actions/preStartTalk";
 import { toast } from "sonner";
 
@@ -35,7 +35,7 @@ export default function PreStartForm({
   workSites,
 }: {
   users: TypeUserClient[],
-  workSites: TypeWorkSiteClient[],
+  workSites: TypeWorkSiteList[],
 }) {
   // const [error, setError] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
